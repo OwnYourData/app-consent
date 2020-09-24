@@ -1,0 +1,20 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: app-consent-ingress
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    certmanager.k8s.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  tls:
+  - hosts:
+    - consent.oydapp.eu
+    secretName: letsencrypt-app-consent
+  rules:
+  - host: consent.oydapp.eu
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: app-consent-service
+          servicePort: 80

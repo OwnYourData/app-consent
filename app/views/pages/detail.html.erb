@@ -1,0 +1,68 @@
+<% provide(:title, t('detail.header') ) %>
+
+<div class="container" style="margin-top: 15px;"><div class="row">
+  <div class="col-md-12">
+    <% flash.each do |message_type, message| %>
+        <div class="alert alert-<%= message_type %>">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <%= message %>
+        </div>
+    <% end %>
+  </div>
+</div><div class="row">
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th style="width: 20%;"><%= t('detail.field_hdr') %></th>
+                <th><%= t('detail.content_hdr') %></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><%= t('detail.timestamp') %></td>
+                <td><%= Time.at(@detail["timestamp"]).to_datetime.to_s %></td>
+            </tr>
+            <tr>
+                <td><%= t('detail.service_endpoint') %></td>
+                <td><%= @detail["service-endpoint"].to_s %></td>
+            </tr>
+            <tr>
+                <td><%= t('list.description') %></td>
+                <td><%= @detail["service-description"] %></td>
+            </tr>
+            <tr>
+                <td><%= t('detail.identifier') %></td>
+                <td><%= @detail["identifier"] %></td>
+            </tr>
+            <tr>
+                <td><%= t('detail.policy') %></td>
+                <td><span style="white-space: pre-line"><pre><code><%= @detail["usage-policy"].strip %></code></pre></span></td>
+            </tr>
+            <tr>
+                <td><%= t('detail.retrieve_usage') %></td>
+                <td>
+                    <%= link_to trace_path(srv: @detail["service-endpoint"].to_s, id: @detail["receipt"]["receipt"].to_s), class: "btn btn-info",  "data-turbolinks": "false" do %>
+                        <span class="glyphicon glyphicon-download"></span>
+                        <span class="hidden-xs hidden-sm"><%= t('detail.request_btn') %></span>
+                     <% end %>
+                </td>
+            </tr>
+            <tr>
+                <td><%= t('detail.revoke_lbl') %></td>
+                <td>
+                    <%= link_to revoke_path(srv: @detail["service-endpoint"].to_s, id: @detail["receipt"]["receipt"].to_s, detail: @detail["id"], key: @detail["receipt"]["revocation_key"].to_s), 
+                            class: "btn btn-danger",
+                            data: { confirm: t('data.revoke_question') } do %>
+                        <span class="glyphicon glyphicon-remove"></span>
+                        <span class="hidden-xs hidden-sm"><%= t('detail.revoke_btn') %></span>
+                    <% end %>
+                </td>
+        </tbody>
+    </table>
+</div>
+
+<%= link_to t('general.back_to_root'), root_url %>
+
+</div></div>

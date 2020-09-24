@@ -1,0 +1,24 @@
+<table class="table">
+  <thead><tr>
+    <th scope="col"><%= t('list.date') %></th>
+    <th scope="col"><%= t('list.description') %></th>
+    <th scope="col" class="text-right col-md-2 col-sm-2 col-xs-2"><%= t('list.action') %> &nbsp; &nbsp; &nbsp; </th>
+  </tr></thead>
+  <tbody>
+  <% items.each do |i| 
+        item = JSON.parse(i) rescue {} %>
+    <tr>
+      <td class="col-md-2 col-sm-2 col-xs-2"><%= Time.at(item["timestamp"]).to_datetime.to_s %></td>
+      <td><%= item["service-description"] %></td>
+      <td class="text-right col-md-2 col-sm-2 col-xs-2">
+        <div class="btn-group flex-btn-group-container">
+          <%= link_to detail_path(id: item["id"].to_s), class: "btn btn-info btn-sm" do %>
+            <span class="glyphicon glyphicon-eye-open"></span>
+            <span class="hidden-xs hidden-sm"><%= t('list.detailsBtn') %></span>
+          <% end %>
+        </div>
+      </td>
+    </tr>
+  <% end unless items.nil? %>
+  </tbody>
+</table>
