@@ -60,6 +60,21 @@ en:
     revoke_btn: "Submit"
   data:
     revoke_question: "Do you really want to delete the data?"
+    show_more: "show more"
+    show_less: "show less"
   message:
     success: "The revocation for the consent of the data transfer was successful."
     failure: "The revocation for the consent of the data transfer could not be carried out."
+  usage:
+    data:
+      label: "Data Category"
+    recipient:
+      label: "Recipient"
+    purpose:
+      label: "Purpose"
+    processing:
+      label: "Processing"
+    location:
+      label: "Storage Location"
+    duration:
+      label: "Storage Duration"

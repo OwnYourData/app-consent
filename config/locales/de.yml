@@ -62,6 +62,21 @@ de:
     revoke_btn: "Senden"
   data:
     revoke_question: "Sollen die Daten wirklich gelöscht werden?"
+    show_more: "mehr anzeigen"
+    show_less: "weniger anzeigen"
   message:
     success: "Der Widerruf für die Zustimmung der Datenweitergabe war erfolgreich."
     failure: "Der Widerruf für die Zustimmung der Datenweitergabe konnte nicht durchgeführt werden."
+  usage:
+    data:
+      label: "Datenkategorie"
+    recipient:
+      label: "Empfänger"
+    purpose:
+      label: "Verwendung"
+    processing:
+      label: "Verarbeitung"
+    location:
+      label: "Speicherort"
+    duration:
+      label: "Speicherdauer"

@@ -37,8 +37,18 @@
                 <td><%= @detail["identifier"] %></td>
             </tr>
             <tr>
-                <td><%= t('detail.policy') %></td>
-                <td><span style="white-space: pre-line"><pre><code><%= @detail["usage-policy"].strip %></code></pre></span></td>
+                <td><%= t('detail.policy') %><br>(<a href='https://www.specialprivacy.eu/images/documents/SPECIAL_D21_M12_V10.pdf' target='_blank' style='text-decoration: underline !important;'>definitions</a>)</td>
+                <td>
+                    <p><strong><%= t('usage.data.label') %>:</strong> <%= @usage["data"].to_s %></p>
+                    <p><strong><%= t('usage.purpose.label') %>:</strong> <%= @usage["purpose"].to_s %></p>
+                    <p><strong><%= t('usage.processing.label') %>:</strong> <%= @usage["processing"].to_s %></p>
+                    <p><strong><%= t('usage.recipient.label') %>:</strong> <%= @usage["recipient"].to_s %></p>
+                    <p><strong><%= t('usage.location.label') %>:</strong> <%= @usage["location"].to_s %></p>
+                    <p><strong><%= t('usage.duration.label') %>:</strong> <%= @usage["duration"].to_s %></p>
+                    <a class="more_link" href="#" data-turbolinks="false"><%= t('data.show_more') %></a>
+                    <a class="less_link" href="#" data-turbolinks="false" style="display: none;"><%= t('data.show_less') %></a>
+                    <span id="up_details" style="white-space: pre-line; display: none;"><pre><code><%= @detail["usage-policy"].strip %></code></pre></span>
+                </td>
             </tr>
             <tr>
                 <td><%= t('detail.retrieve_usage') %></td>
@@ -66,3 +76,19 @@
 <%= link_to t('general.back_to_root'), root_url %>
 
 </div></div>
+
+<script type="text/javascript">
+    $(function () {
+        $('.more_link').on('click', function () {
+        $('.more_link').hide();
+        $('.less_link').show();
+        $('#up_details').show();
+        });
+      $('.less_link').on('click', function () {
+        $('.more_link').show();
+        $('.less_link').hide();
+        $('#up_details').hide();
+        });
+      
+    });
+</script>

@@ -191,6 +191,7 @@ class PagesController < ApplicationController
         end
 
         @detail = {}
+        @usage = {}
         dec_url = itemsUrl(app["pia_url"], "oyd.consent")
         @items = readRawItems(app, dec_url)
         @items.each do |i|
@@ -200,27 +201,47 @@ class PagesController < ApplicationController
                 break
             end
         end
-
+        if @detail != {}
+            body = {"ttl": @detail["usage-policy"].to_s}
+            up_parse_url = "https://governance.ownyourdata.eu/api/usage-policy/parse"
+            response = HTTParty.post(up_parse_url,
+                            headers: { 'Content-Type'   => 'application/json' },
+                            body:    body.to_json)
+            if response.code == 200
+                @up = response.parsed_response
+                @usage["data"] = @up["data"].map{|i| i["value"]}.join(", ")
+                @usage["purpose"] = @up["purpose"].map{|i| i["value"]}.join(", ")
+                @usage["processing"] = @up["processing"].map{|i| i["value"]}.join(", ")
+                @usage["recipient"] = @up["recipient"].map{|i| i["value"]}.join(", ")
+                @usage["location"] = @up["location"].map{|i| i["value"]}.join(", ")
+                @usage["duration"] = @up["duration"].map{|i| i["value"]}.join(", ")
+            end
+        end
     end
 
     def trace
-# puts "Service Endpoint: " + params[:srv].to_s
-# puts "ID: " + params[:id].to_s
-        response = HTTParty.get(params[:srv].to_s + "/api/rcpt/" + params[:id].to_s)
-        render plain: JSON.pretty_generate(response.parsed_response)
+        begin
+            response = HTTParty.get(params[:srv].to_s + "/api/rcpt/" + params[:id].to_s)
+            render plain: JSON.pretty_generate(response.parsed_response)
+        rescue
+            render plain: "no information could be retrieved from service endpoint: " + params[:srv].to_s
+        end
     end
 
     def revoke
-        response = HTTParty.delete(params[:srv].to_s + "/api/receipt/" + params[:id].to_s + "/revoke",
-                        headers: { 'Content-Type'   => 'application/json' },
-                        body:    { 'revocation_key': params[:key].to_s }.to_json)
-        if response.code == 200
-            flash[:success] = t('message.success')
-        else
-            flash[:warning] = t('message.failure')
+        begin
+            response = HTTParty.delete(params[:srv].to_s + "/api/receipt/" + params[:id].to_s + "/revoke",
+                            headers: { 'Content-Type'   => 'application/json' },
+                            body:    { 'revocation_key': params[:key].to_s }.to_json)
+            if response.code == 200
+                flash[:success] = t('message.success')
+            else
+                flash[:warning] = t('message.failure')
+            end
+            redirect_to detail_path(id: params[:detail])
+        rescue
+            render plain: "a revocation request to service endpoint: '" + params[:srv].to_s + "' was not successful"
         end
-puts response.parsed_response.to_json        
-        redirect_to detail_path(id: params[:detail])
     end
 
     def error

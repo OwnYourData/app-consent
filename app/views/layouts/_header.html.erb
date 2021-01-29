@@ -18,7 +18,7 @@
                             <span class="glyphicon glyphicon-cog"  style="font-size:25px; color: #42B58C;"></span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-right">
-                            <li><%= link_to t('general.to_data_vault'), @pia_url || "#" %></li>
+                            <li><%= link_to t('general.to_data_vault'), @pia_url || "https://data-vault.eu" %></li>
                             <% if params[:locale].to_s == "en" %>
                                 <li><%= link_to "Sprachauswahl 'Deutsch'", { locale: 'de' } %></li>
                             <% else %>
